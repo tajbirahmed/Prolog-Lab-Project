@@ -48,6 +48,15 @@ predicates
 
     return_book(book_title, user_name)
 
+    list_borrowed_books
+
+    list_books
+
+    list_users
+
+    generate_library_report
+
+
 
 /* --- Clauses --- */
 clauses
@@ -194,7 +203,8 @@ clauses
         user_record(UserName),
         borrowed_books(UserName, BookTitle),
         retract(borrowed_books(UserName, BookTitle)),  % Remove from borrowed books list
-        write("User '"), write(UserName),
+        write("User '"), 
+        write(UserName),
         write("' successfully returned the book: "), 
         write(BookTitle), nl.
 
@@ -223,6 +233,61 @@ clauses
     handle_error(default, Message) :-
         write("Error: "), 
         write(Message), nl. 
+
+
+    /* Predicate to generate a library report */
+    generate_library_report :-
+        write("Library Report"), nl,
+        write("----------------------------"), nl,
+
+        /* List all books */
+        write("Books in the Library:"), nl,
+        list_books, nl,
+
+    /* List all users */
+        write("Registered Users:"), nl,
+        list_users, nl,
+
+
+        /* Display borrowed books */
+        write("Borrowed Books:"), nl,
+        list_borrowed_books, nl,
+
+        write("----------------------------"), nl,
+        write("End of Report"), nl.
+
+
+    /* List all books */
+    list_books :-
+        book_record(Title, Author, Genre, Copies),
+        write("Title: "), 
+        write(Title), 
+        write(", Author: "), 
+        write(Author), 
+        write(", Genre: "), 
+        write(Genre), 
+        write(", Copies: "), 
+        write(Copies), nl,
+        fail.
+    list_books.  
+
+    /* List all registered users */
+    list_users :-
+        user_record(UserName),
+        write("User: "), 
+        write(UserName), nl,
+        fail.
+    list_users.  
+
+    /* List all borrowed books */
+    list_borrowed_books :-
+        borrowed_books(UserName, BookTitle),
+        write("User: "), 
+        write(UserName), 
+        write(" borrowed Book: "), 
+        write(BookTitle), nl,
+        fail.
+    list_borrowed_books.  
 
 
     /* --- Goal --- */
